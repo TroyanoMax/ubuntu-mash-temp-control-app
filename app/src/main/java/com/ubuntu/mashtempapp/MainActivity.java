@@ -20,14 +20,12 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BluetoothAdapter bluetoothAdapter;
-    private BluetoothDevice bluetoothDevice;
     private BluetoothSocket bluetoothSocket;
     private InputStream inputStream;
     private TextView temperatureTextView;
 
     // Este es el código que identifica la solicitud de permiso de Bluetooth
-    private static final int CODIGO_DE_SOLICITUD_DE_PERMISO_BLUETOOTH = 1;
+    private static final int BT_PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         temperatureTextView = findViewById(R.id.temp);
 
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
             // El dispositivo no admite Bluetooth
             return;
@@ -44,15 +42,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Cambia la dirección MAC con la dirección de tu HC-05
         String hc05Address = "98:D3:31:30:99:35";
-        bluetoothDevice = bluetoothAdapter.getRemoteDevice(hc05Address);
+        BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(hc05Address);
 
-        // UUID predeterminado para comunicación serie (SPP) Bluetooth
+        // UUID predeterminado para comunicación, serie (SPP) Bluetooth
         UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
         try {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                 // No tienes el permiso, así que necesitas solicitarlo.
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.BLUETOOTH_CONNECT}, CODIGO_DE_SOLICITUD_DE_PERMISO_BLUETOOTH);
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.BLUETOOTH_CONNECT}, BT_PERMISSION_CODE);
             } else {
                 // Tienes el permiso, puedes continuar con tus operaciones relacionadas con Bluetooth.
 
