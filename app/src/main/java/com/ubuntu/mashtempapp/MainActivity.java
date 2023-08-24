@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothSocket;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,7 +52,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                 // No tienes el permiso, así que necesitas solicitarlo.
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.BLUETOOTH_CONNECT}, BT_PERMISSION_CODE);
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{
+                                android.Manifest.permission.BLUETOOTH_CONNECT
+                        }, BT_PERMISSION_CODE);
             } else {
                 // Tienes el permiso, puedes continuar con tus operaciones relacionadas con Bluetooth.
 
@@ -60,55 +66,76 @@ public class MainActivity extends AppCompatActivity {
                 bluetoothSocket.connect();
                 inputStream = bluetoothSocket.getInputStream();
 
-                temperatureTextView.setText("texto nuevo");
+                temperatureTextView.setText(R.string.text_temp);
 
                 // Inicia el hilo para recibir datos
                 new Thread(new ReceiveDataThread()).start();
 
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SecurityException se) {
-            se.printStackTrace();
+        } catch (IOException | SecurityException e) {
+            Log.e("Error: {}", e.getMessage());
         }
     }
 
     private class ReceiveDataThread implements Runnable {
         @Override
         public void run() {
-//            byte[] buffer = new byte[1024];
-//            int bytes;
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            while (true) {
+//            while (true) {
+//                try {
+//                    String data = reader.readLine();
+//                    // Actualiza el TextView en el hilo principal
+//                    handler.obtainMessage(0, data).sendToTarget();
+//
+//                } catch (IOException e) {
+//
+//                    Log.e("Error: {}", e.getMessage());
+//                    break;
+//                }
+//            }
+
+            boolean continueReading = true;
+
+            while (continueReading) {
                 try {
-//                    bytes = inputStream.read(buffer);
-//                    String data = new String(buffer, 0, bytes);
-
                     String data = reader.readLine();
-
-                    // Actualiza el TextView en el hilo principal
-                    handler.obtainMessage(0, data).sendToTarget();
-
+                    if (data == null) {
+                        continueReading = false; // Termina el bucle cuando no hay más datos
+                    } else {
+                        // Actualiza el TextView en el hilo principal
+                        handler.obtainMessage(0, data).sendToTarget();
+                    }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("Error", e.getMessage());
                     break;
                 }
             }
+
         }
     }
 
-    private final Handler handler = new Handler(new Handler.Callback() {
+//    private final Handler handler = new Handler(new Handler.Callback() {
+//        @Override
+//        public boolean handleMessage(@NonNull Message msg) {
+//            if (msg.what == 0) {
+//                String receivedData = (String) msg.obj;
+//                temperatureTextView.setText(receivedData);
+//            }
+//            return true;
+//        }
+//    });
+
+    private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
-        public boolean handleMessage(@NonNull Message msg) {
+        public void handleMessage(@NonNull Message msg) {
             if (msg.what == 0) {
                 String receivedData = (String) msg.obj;
                 temperatureTextView.setText(receivedData);
             }
-            return true;
         }
-    });
+    };
 
     @Override
     protected void onDestroy() {
@@ -122,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
                 bluetoothSocket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("Error {}", e.getMessage());
         }
     }
+
 }
