@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MashTempApp</string>
-    <string name="text_temp">Mash</string>
+    <string name="text_temp">0.0</string>
+    <string name="grade_symbol">°</string>
+    <string name="button_dec_txt">-</string>
+    <string name="button_inc_txt">+</string>
 </resources>
