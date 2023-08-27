@@ -2,4 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Colors -->
+    <color name="primaryColor">#0073ff</color>
+    <color name="primaryLighterColor">#b3d5ff</color>
+    <color name="primaryDarkerColor">#0056ff</color>
+
+    <!-- Accent Colors -->
+    <color name="accentColor">#797979</color>
+    <color name="accentLighterColor">#d7d7d7</color>
+    <color name="accentDarkerColor">#5c5c5c</color>
+
+    <!-- Warn Colors -->
+    <color name="warnColor">#ffc900</color>
+    <color name="warnLighterColor">#ffefb3</color>
+    <color name="warnDarkerColor">#ffb500</color>
 </resources>

@@ -6,15 +6,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-    <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            android:id="@+id/temp"
-            app:layout_constraintBottom_toBottomOf="parent"
+
+    <ProgressBar
+            android:id="@+id/progress_temp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:indeterminateOnly="false"
+            android:progressDrawable="@drawable/circle"
+            tools:progress="50"
+            tools:max="10000"
+            tools:min="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:textAlignment="center" android:textStyle="bold"
-            android:textSize="34sp"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            tools:text="50°"
+            android:id="@+id/progress_temp_text"
+            app:layout_constraintTop_toTopOf="@+id/progress_temp"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_temp"
+            app:layout_constraintEnd_toEndOf="@+id/progress_temp"
+            app:layout_constraintStart_toStartOf="@+id/progress_temp" android:textStyle="bold" android:textSize="48sp"/>
+
+    <Button android:id="@+id/button_dec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_dec_txt"
+            app:layout_constraintStart_toStartOf="@+id/progress_temp"
+            app:layout_constraintTop_toBottomOf="@+id/progress_temp"/>
+
+    <Button android:id="@+id/button_inc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_inc_txt"
+            app:layout_constraintEnd_toEndOf="@+id/progress_temp"
+            app:layout_constraintTop_toBottomOf="@+id/progress_temp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
