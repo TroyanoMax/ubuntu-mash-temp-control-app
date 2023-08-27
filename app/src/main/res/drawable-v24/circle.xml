@@ -2,10 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape
+                android:innerRadiusRatio="2.6"
                 android:shape="ring"
-                android:thicknessRatio="16"
+                android:thickness="18dp"
                 android:useLevel="false">
-            <solid android:color="#BBB"/>
+            <solid android:color="@color/accentDarkerColor"/>
         </shape>
     </item>
     <item>
@@ -13,13 +14,16 @@
                 android:fromDegrees="270"
                 android:toDegrees="270">
             <shape
+                    android:innerRadiusRatio="2.5"
                     android:shape="ring"
-                    android:thicknessRatio="16"
-                    android:useLevel="true">
-                <solid android:color="@color/design_default_color_primary"/>
-                <corners
-                    android:radius="5dp"
-                />
+                    android:thickness="10dp"
+                    android:useLevel="true"><!-- this line fixes the issue for lollipop api 21 -->
+                <gradient
+                        android:angle="0"
+                        android:endColor="#F00"
+                        android:startColor="#0F0"
+                        android:type="sweep"
+                        android:useLevel="false" />
             </shape>
         </rotate>
     </item>

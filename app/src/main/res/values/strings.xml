@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MashTempApp</string>
+    <string name="app_name">Ubuntu Mash Control</string>
     <string name="text_temp">0.0</string>
     <string name="grade_symbol">°</string>
     <string name="button_dec_txt">-</string>
