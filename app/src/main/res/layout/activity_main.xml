@@ -30,7 +30,9 @@
             app:layout_constraintTop_toTopOf="@+id/progress_temp"
             app:layout_constraintBottom_toBottomOf="@+id/progress_temp"
             app:layout_constraintEnd_toEndOf="@+id/progress_temp"
-            app:layout_constraintStart_toStartOf="@+id/progress_temp" android:textStyle="bold" android:textSize="48sp"/>
+            app:layout_constraintStart_toStartOf="@+id/progress_temp"
+            android:textStyle="bold"
+            android:textSize="48sp"/>
 
     <Button android:id="@+id/button_dec"
             android:layout_width="wrap_content"

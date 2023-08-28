@@ -4,15 +4,21 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.*;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // TextView para mostar la temperatura
         temperatureTextView = findViewById(R.id.progress_temp_text);
         // Carga la fuente personalizada desde la carpeta assets/fonts
-        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/avalea.ttf");
+        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/gothanthin.otf");
 
         // Aplica la fuente al TextView
         temperatureTextView.setTypeface(customFont);
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         progress_temp.setMax(10000);
 
         progress_temp.setProgress(2536);
-        temperatureTextView.setText("25.36");
+        temperatureTextView.setText("25.36°");
 
 //        button_inc = findViewById(R.id.button_inc);
 //        button_dec = findViewById(R.id.button_dec);
@@ -111,6 +117,58 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException | SecurityException e) {
             Log.e("Error: {}", e.getMessage());
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        if(itemId == R.id.nav_item1){
+
+            Toast.makeText(this, R.string.item_1, Toast.LENGTH_SHORT).show();
+
+            return true;
+
+        } else if (itemId == R.id.nav_item2){
+
+            Toast.makeText(this, R.string.item_2, Toast.LENGTH_SHORT).show();
+
+            return true;
+
+        } else if (itemId == R.id.nav_item3){
+
+            showAboutDialog("Versión 0.0.1-SNAPSHOT");
+            Toast.makeText(this, R.string.item_3, Toast.LENGTH_SHORT).show();
+
+            return true;
+
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void showAboutDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Ubuntu Mash Control")
+                .setMessage(message)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Acción a realizar al hacer clic en el botón "Aceptar"
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false) // No se puede cancelar tocando fuera del diálogo
+                .show();
     }
 
     private class ReceiveDataThread implements Runnable {

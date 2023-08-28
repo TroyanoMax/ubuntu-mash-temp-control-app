@@ -4,4 +4,9 @@
     <string name="grade_symbol">°</string>
     <string name="button_dec_txt">-</string>
     <string name="button_inc_txt">+</string>
+    <string name="dispositivos_bt">Dispositivos BT</string>
+    <string name="configuraci_n">Configuración</string>
+    <string name="item_3">Help</string>
+    <string name="item_2">Configuración</string>
+    <string name="item_1">Dispositivos</string>
 </resources>
