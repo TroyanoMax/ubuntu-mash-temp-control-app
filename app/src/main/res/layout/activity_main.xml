@@ -93,7 +93,8 @@
                         android:text="Min"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content" android:id="@+id/textView2" android:layout_weight="1"
-                        android:textSize="24sp" android:textAlignment="textStart"/>
+                        android:textSize="24sp" android:textAlignment="center"
+                />
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
@@ -131,7 +132,7 @@
                         android:id="@+id/textView3"
                         android:layout_weight="1"
                         android:textSize="24sp"
-                        android:textAlignment="textStart"/>
+                        android:textAlignment="center"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"

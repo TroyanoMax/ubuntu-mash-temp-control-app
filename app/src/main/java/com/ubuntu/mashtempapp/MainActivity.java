@@ -57,6 +57,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TextView para mostar la temperatura
+        temperatureTextView = findViewById(R.id.progress_temp_text);
+        // textos del termometro muestra min y max temp
+        TextView minTemp = findViewById(R.id.minTextView);
+        TextView maxTemp = findViewById(R.id.maxTextView);
+
+        // Carga la fuente personalizada desde la carpeta assets/fonts
+        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/gothanthin.otf");
+
+        // Aplica la fuente a los TextView
+        temperatureTextView.setTypeface(customFont);
+        minTemp.setTypeface(customFont);
+        maxTemp.setTypeface(customFont);
+
+        // set minimo y máximo
+        progress_temp =  findViewById(R.id.progress_temp);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            progress_temp.setMin(-5500);
+        }
+        progress_temp.setMax(12500);
+
+        // Switch para alarmas
+        betAlarmSwitch = findViewById(R.id.betAlarmSwitch);
+        uppAlarmSwitch = findViewById(R.id.uppAlarmSwitch);
+
+// esto es temporario se setean valores fijos para el termometro
+//        progress_temp.setProgress(7853);
+//        temperatureTextView.setText("78.53°");
+
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
             // El dispositivo no admite Bluetooth
@@ -97,31 +127,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Error: {}", e.getMessage());
         }
 
-        // TextView para mostar la temperatura
-        temperatureTextView = findViewById(R.id.progress_temp_text);
-        // Carga la fuente personalizada desde la carpeta assets/fonts
-        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/gothanthin.otf");
-
-        // textos del termometro muestra min y max temp
-        TextView minTemp = findViewById(R.id.minTextView);
-        TextView maxTemp = findViewById(R.id.maxTextView);
-
-        // Aplica la fuente a los TextView
-        temperatureTextView.setTypeface(customFont);
-        minTemp.setTypeface(customFont);
-        maxTemp.setTypeface(customFont);
-
-        // set minimo y máximo
-        progress_temp =  findViewById(R.id.progress_temp);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            progress_temp.setMin(-5500);
-        }
-        progress_temp.setMax(12500);
-
-        // esto es temporario se setean valores fijos para el termometro
-//        progress_temp.setProgress(7853);
-//        temperatureTextView.setText("78.53°");
-
         // botones y texto configura temperatura minima
         minNumberTextView = findViewById(R.id.minTextNumber);
         Button decMinButton = findViewById(R.id.dec_min_button);
@@ -155,10 +160,6 @@ public class MainActivity extends AppCompatActivity {
             currentMaxValue++;
             updateMaxNumberTextView();
         });
-
-        // Switch para alarmas
-        betAlarmSwitch = findViewById(R.id.betAlarmSwitch);
-        uppAlarmSwitch = findViewById(R.id.uppAlarmSwitch);
 
         // Configurar la alarma cuando el estado del Switch cambia
         betAlarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -296,24 +297,26 @@ public class MainActivity extends AppCompatActivity {
 
                 String receivedData = (String) msg.obj;
 
-                double progress = Double.parseDouble(receivedData);
+                updateProgressBar(receivedData);
 
-                updateProgressBar((int) progress * 100);
-
-                checkAlarm((int)progress);
+                checkAlarm(receivedData);
 
             }
         }
 
         @SuppressLint("SetTextI18n")
-        private void updateProgressBar(int value){
+        private void updateProgressBar(String value){
 
-            progress_temp.setProgress(value);
+            double progress = Double.parseDouble(value);
+
+            progress_temp.setProgress((int)progress*100);
             temperatureTextView.setText(value + "°");
 
         }
 
-        private void checkAlarm(int value){
+        private void checkAlarm(String data){
+
+            double value = Double.parseDouble(data);
 
             if(value > currentMaxValue && uppAlarmSwitch.isChecked()){
                 playAlarmSound(RingtoneManager.TYPE_ALARM );
